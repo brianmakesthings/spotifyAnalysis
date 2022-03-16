@@ -4,13 +4,15 @@ import json
 import sys
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from lyrics import get_playlist_lyrics
 
 
 # ----- import ------
 # pip install spotipy
+# pip install lyricsgenius
 # setopt +o nomatch
 
-# ----- how to run -----
+# ------ inputs ------
 # python3 playlist.py username playlist_id
 
 
@@ -18,18 +20,6 @@ def get_artist_genre(artist_id, sp):
     
     artist = sp.artist(artist_id)
     return artist["genres"]
-
-
-def get_lyrics(artist, song):
-    
-    lyrics_url = 'https://api.lyrics.ovh/v1/' + artist + '/' + song
-    result = requests.get(lyrics_url)
-    
-    if result.status_code in range(200, 299):
-        lyrics = json.loads(result.content)
-        return lyrics
-    else:
-        return {"error": "No lyrics found"}
     
 
 def get_playlist(username, playlist_id, sp):
@@ -40,7 +30,12 @@ def get_playlist(username, playlist_id, sp):
     user_playlist_df = pd.DataFrame(columns = song_feature_columns + song_info_columns)
     playlist = sp.user_playlist_tracks(username, playlist_id)["items"]
 
-    for song in playlist:     
+    count = 0
+
+    for song in playlist: 
+     
+        print("fetching song", count)
+        count = count + 1    
        
         # stores all info of song 
         playlist_dict = {}
@@ -55,10 +50,6 @@ def get_playlist(username, playlist_id, sp):
         genres = get_artist_genre(playlist_dict["artist_uri"], sp)
         playlist_dict["genres"] = [genres]
         
-        # get lyrics
-        lyrics = get_lyrics(playlist_dict["artist"], playlist_dict["song_name"])
-        playlist_dict["lyrics"] = [lyrics]
-        
         # audio features
         audio_features = sp.audio_features(playlist_dict["id"])[0]  
         for feature in song_feature_columns:        
@@ -70,7 +61,7 @@ def get_playlist(username, playlist_id, sp):
     return user_playlist_df
 
 
-def main():
+def main(user_id, playlist_id):
     
     user_id = sys.argv[1]
     playlist_id = sys.argv[2]
@@ -83,11 +74,16 @@ def main():
     sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
    
     playlist_df = get_playlist(user_id, playlist_id, sp)
-    playlist_df.to_csv("playlist.csv")
+  
+    # get lyrics
+    playlist_lyrics_df = get_playlist_lyrics(playlist_df)
+    playlist_lyrics_df.to_csv("playlist.csv")
     
     
 if __name__ == '__main__':
-    main()
+    user_id = sys.argv[1]
+    playlist_id = sys.argv[2]
+    main(user_id, playlist_id)
 
 # reference: https://towardsdatascience.com/how-to-create-large-music-datasets-using-spotipy-40e7242cc6a6
 
