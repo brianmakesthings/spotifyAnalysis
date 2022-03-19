@@ -9,12 +9,11 @@ from lyrics import get_playlist_lyrics
 
 # ----- import ------
 # pip install spotipy
-# pip install lyricsgenius
+# pip install swaglyrics
 # setopt +o nomatch
 
 # ------ inputs ------
 # python3 playlist.py username playlist_id
-
 
 def get_artist_genre(artist_id, sp):
     
@@ -74,11 +73,7 @@ def main(user_id, playlist_id):
     sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
    
     playlist_df = get_playlist(user_id, playlist_id, sp)
-  
-    # get lyrics
-    playlist_lyrics_df = get_playlist_lyrics(playlist_df)
-    playlist_lyrics_df.to_csv("playlist.csv")
-    
+    playlist_df.to_csv("playlist1.csv")
     
 if __name__ == '__main__':
     user_id = sys.argv[1]
