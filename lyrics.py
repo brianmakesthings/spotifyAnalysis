@@ -12,7 +12,7 @@ pd.options.mode.chained_assignment = None
 
 
 def remove(text):
-    removed = re.sub(r'(?:,|((\[)(Chorus|Verse(?:| [0-9]+)|Bridge|Pre-Chorus|Post-Chorus|Outro|Intro)(?:|: [^\]]*)(\]\n)))', "",text) 
+    removed = re.sub(r'(?:,|((\[)(Chorus|Verse(?:| [0-9]+)|Bridge|Pre-Chorus|Post-Chorus|Outro|Intro|Interlude)(?:|: [^\]]*)(\]\n)))', "",text) 
     return removed
 
 
