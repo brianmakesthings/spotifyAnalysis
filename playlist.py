@@ -5,6 +5,7 @@ import sys
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from lyrics import get_playlist_lyrics
+from songReleaseDate import songReleaseDate
 
 
 # ----- import ------
@@ -44,6 +45,7 @@ def get_playlist(username, playlist_id, sp):
         playlist_dict["album"] = song["track"]["album"]["name"]
         playlist_dict["song_name"] = song["track"]["name"]
         playlist_dict["id"] = song["track"]["id"]
+        songReleaseDate(song, playlist_dict)
         
         # get genre of artist
         genres = get_artist_genre(playlist_dict["artist_uri"], sp)
@@ -81,5 +83,3 @@ if __name__ == '__main__':
     main(user_id, playlist_id)
 
 # reference: https://towardsdatascience.com/how-to-create-large-music-datasets-using-spotipy-40e7242cc6a6
-
-
