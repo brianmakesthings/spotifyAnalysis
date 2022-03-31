@@ -81,7 +81,7 @@ def main(playlist_csv):
     cachedStopWords = stopwords.words("english")
 #     songs_df['lyrics'] = songs_df['lyrics'].apply(ast.literal_eval)
     songs_df['lyrics_filtered'] = songs_df.apply(lambda row : filter_lyrics(row, cachedStopWords), axis=1)
-    songs_df.to_csv("playlist_lyrics.csv")
+    songs_df.to_csv(playlist_csv)
     
     print("Done")
 
