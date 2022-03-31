@@ -75,12 +75,12 @@ def main(user_id, playlist_id, output_file):
     sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
    
     playlist_df = get_playlist(user_id, playlist_id, sp)
-    playlist_df.to_csv("output_file.csv")
+    playlist_df.to_csv(output_file)
     
 if __name__ == '__main__':
     user_id = sys.argv[1]
     playlist_id = sys.argv[2]
     output_file = sys.argv[3]
-    main(user_id, playlist_id)
+    main(user_id, playlist_id, output_file)
 
 # reference: https://towardsdatascience.com/how-to-create-large-music-datasets-using-spotipy-40e7242cc6a6
