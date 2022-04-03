@@ -5,3 +5,4 @@ python playlist.py Spotify 37i9dQZF1DX1lVhptIYRda playlists/spotifyHotCountry.cs
 python playlist.py Spotify 37i9dQZF1DX4SBhb3fqCJd playlists/spotifyRAndB.csv
 python playlist.py Spotify 37i9dQZF1DWXRqgorJj26U playlists/spotifyRockClassics.csv
 python playlist.py Spotify 37i9dQZF1DXcRXFNfZr7Tp playlists/spotifyJustHits.csv 
+python playlist.py null 1h0CEZCm6IbFTbxThn6Xcs playlists/premadeClassical.csv
