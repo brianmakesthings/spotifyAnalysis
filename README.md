@@ -10,4 +10,5 @@ $ pip install plotly
 $ pip install spotipy
 $ pip install swaglyrics
 $ pip install nltk
+$ pip install wordcloud
 ```
