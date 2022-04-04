@@ -20,7 +20,7 @@ def filter_lyrics(playlist_row, cachedStopWords):
     
     lyrics = playlist_row['lyrics'][0]
     
-    if lyrics is '' or lyrics is None:
+    if lyrics == '' or lyrics is None:
         return 'Error: No lyrics found'
    
     # replace characters/words that are not a part of the lyrics with a space
