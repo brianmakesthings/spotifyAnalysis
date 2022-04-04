@@ -45,6 +45,7 @@ def get_playlist(username, playlist_id, sp):
         playlist_dict["album"] = song["track"]["album"]["name"]
         playlist_dict["song_name"] = song["track"]["name"]
         playlist_dict["id"] = song["track"]["id"]
+        playlist_dict["popularity"] = song["track"]["popularity"]
         songReleaseDate(song, playlist_dict)
         
         # get genre of artist

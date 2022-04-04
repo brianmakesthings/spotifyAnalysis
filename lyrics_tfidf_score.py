@@ -2,8 +2,7 @@ import pandas as pd
 import regex as re
 import string
 import math
-
-df = pd.read_csv("playlist_lyrics.csv")
+import sys
 
 def number_of_occurences(word, lyric):
     # The translate table takes in characters to remove and characters to keep
@@ -18,7 +17,8 @@ def num_lyrics_containing_word(word, lyrics):
             count += 1
     return count
 
-def main():
+def main(playlist):
+    df = pd.read_csv(playlist)
     # Accounting for the number of times a word occurs in a lyric
     word_occurence = 0
     Total_TFIDF_Score = []
@@ -45,4 +45,4 @@ def main():
     lyrics_df.to_csv("Lyrics_TFIDF_Score")
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1])
