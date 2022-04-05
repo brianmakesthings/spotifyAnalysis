@@ -76,7 +76,7 @@ def main(user_id, playlist_id, output_file):
     sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
    
     playlist_df = get_playlist(user_id, playlist_id, sp)
-    playlist_df.to_csv(output_file)
+    playlist_df.to_csv(output_file, index = False)
     
 if __name__ == '__main__':
     user_id = sys.argv[1]
