@@ -13,7 +13,8 @@ pd.options.mode.chained_assignment = None
 
 def remove(text):
     removed = re.sub(r'(?:,|((\[)(Chorus|Verse(?:| [0-9]+)|Vers(?:| [0-9]+)|Bridge|Pre-Chorus|Post-Chorus|Outro|Intro|Interlude)(?:|: [^\]]*)(\]\n)))', "",text) 
-    return removed
+    removed = removed.replace("(","").replace(")","")
+
 
 
 def filter_lyrics(playlist_row, cachedStopWords):
@@ -30,9 +31,6 @@ def filter_lyrics(playlist_row, cachedStopWords):
     lyrics = ' '.join([word for word in lyrics.lower().split() if word not in cachedStopWords])
     
     return lyrics
-    
-
-    
 
 
 def get_playlist_lyrics(row):
