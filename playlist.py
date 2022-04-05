@@ -5,6 +5,7 @@ import sys
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from lyrics import get_playlist_lyrics
+from songReleaseDate import songReleaseDate
 
 
 # ----- import ------
@@ -44,6 +45,8 @@ def get_playlist(username, playlist_id, sp):
         playlist_dict["album"] = song["track"]["album"]["name"]
         playlist_dict["song_name"] = song["track"]["name"]
         playlist_dict["id"] = song["track"]["id"]
+        playlist_dict["popularity"] = song["track"]["popularity"]
+        songReleaseDate(song, playlist_dict)
         
         # get genre of artist
         genres = get_artist_genre(playlist_dict["artist_uri"], sp)
@@ -60,7 +63,7 @@ def get_playlist(username, playlist_id, sp):
     return user_playlist_df
 
 
-def main(user_id, playlist_id):
+def main(user_id, playlist_id, output_file):
     
     user_id = sys.argv[1]
     playlist_id = sys.argv[2]
@@ -73,13 +76,12 @@ def main(user_id, playlist_id):
     sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
    
     playlist_df = get_playlist(user_id, playlist_id, sp)
-    playlist_df.to_csv("playlist.csv")
+    playlist_df.to_csv(output_file, index = False)
     
 if __name__ == '__main__':
     user_id = sys.argv[1]
     playlist_id = sys.argv[2]
-    main(user_id, playlist_id)
+    output_file = sys.argv[3]
+    main(user_id, playlist_id, output_file)
 
 # reference: https://towardsdatascience.com/how-to-create-large-music-datasets-using-spotipy-40e7242cc6a6
-
-
