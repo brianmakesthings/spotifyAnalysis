@@ -94,8 +94,8 @@ def main(playlist, corpus, filename):
     return
 
 if __name__ == "__main__":
-    corpus = pd.read_csv("./spotifydata.csv", index_col=0)
-    playlist = pd.read_csv(sys.argv[1], index_col=0)
+    corpus = pd.read_csv("./spotifydata.csv")
+    playlist = pd.read_csv(sys.argv[1])
     if len(sys.argv) == 3:
-        corpus = pd.read_csv(sys.argv[2], index_col=0)
+        corpus = pd.read_csv(sys.argv[2])
     main(playlist, corpus, sys.argv[1])
