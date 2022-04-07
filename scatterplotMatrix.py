@@ -4,7 +4,7 @@ import plotly.express as px
 import sys
 
 def main(playlists, output=None):
-    playlistDfs = list(map(lambda x: pd.read_csv(x, index_col=0).drop("Unnamed: 0", axis=1), playlists))
+    playlistDfs = list(map(lambda x: pd.read_csv(x), playlists))
     numericColumns = ["danceability",
                     "energy",
                     "loudness",

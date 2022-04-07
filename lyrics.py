@@ -14,6 +14,7 @@ pd.options.mode.chained_assignment = None
 def remove(text):
     removed = re.sub(r'(?:,|((\[)(Chorus|Verse(?:| [0-9]+)|Vers(?:| [0-9]+)|Bridge|Pre-Chorus|Post-Chorus|Outro|Intro|Interlude)(?:|: [^\]]*)(\]\n)))', "",text) 
     removed = removed.replace("(","").replace(")","")
+    return removed
 
 
 

@@ -17,7 +17,7 @@ numericColumns = ["danceability",
                 ]
 
 def main(playlists):
-    playlistDfs = list(map(lambda x: pd.read_csv(x, index_col=0).drop("Unnamed: 0", axis=1).dropna(), playlists))
+    playlistDfs = list(map(lambda x: pd.read_csv(x).dropna(), playlists))
     comparisonDf = pd.concat(list(map(lambda x: x[numericColumns], playlistDfs)), keys=playlists) \
         .reset_index(1, drop=True) \
         .reset_index(col_fill='Source')
