@@ -6,6 +6,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
 from joblib import dump, load
+import os
 
 
 numericColumns = ["danceability",
@@ -29,6 +30,7 @@ def recommendN(songs, playlist, n):
         StandardScaler(),
         KNeighborsClassifier()
     )
+    songs = songs.dropna()
     # print(playlist[["song_name", "artist"]])
     X = songs[numericColumns]
     y = songs.index
@@ -39,11 +41,12 @@ def recommendN(songs, playlist, n):
     playlistVec = pd.DataFrame(playlistVec).T
     probabilityVec = model.predict_proba(playlistVec)
     indices = extractIndices(probabilityVec, n)
-    print(indices)
-    print(songs.loc[indices])
+    # print(indices)
+    # print(songs.loc[indices])
     return songs.loc[indices]
 
 def nnRecommendN(songs, playlist, n):
+    songs = songs.dropna()
     X = songs[numericColumns]
     y = songs.index
 
@@ -62,8 +65,8 @@ def nnRecommendN(songs, playlist, n):
     playlistVec = pd.DataFrame(playlistVec).T
     probabilityVec = model.predict_proba(playlistVec)
     indices = extractIndices(probabilityVec, n)
-    print(indices)
-    print(songs.loc[indices])
+    # print(indices)
+    # print(songs.loc[indices])
     return songs.loc[indices]
 
 
@@ -79,8 +82,15 @@ def test(songs, playlist, train_percent):
     intersection = pd.merge(recommendations, validation_set, how="inner")
     print(len(intersection)/len(validation_set))
 
-def main(playlist, corpus):
-    nnRecommendN(corpus, playlist, 5)
+def exportRec(df, filename, suffix):
+    df.to_csv('./recs/' + os.path.basename(filename).split(".")[0] + suffix, index=False)
+
+def main(playlist, corpus, filename):
+    numRecs = 5
+    knnRecommendations = recommendN(corpus, playlist, numRecs)
+    nnRecommendations = nnRecommendN(corpus, playlist, numRecs)
+    exportRec(knnRecommendations, filename, "-knn.csv")
+    exportRec(nnRecommendations, filename, "-nn.csv")
     return
 
 if __name__ == "__main__":
@@ -88,4 +98,4 @@ if __name__ == "__main__":
     playlist = pd.read_csv(sys.argv[1], index_col=0)
     if len(sys.argv) == 3:
         corpus = pd.read_csv(sys.argv[2], index_col=0)
-    main(playlist, corpus)
+    main(playlist, corpus, sys.argv[1])
