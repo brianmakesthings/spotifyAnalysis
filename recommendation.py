@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+import sys
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
+from joblib import dump, load
 
 
 numericColumns = ["danceability",
@@ -16,6 +17,8 @@ numericColumns = ["danceability",
                   "liveness",
                   "valence",
                   "tempo"]
+
+MLP_MODEL_CACHE_FILE = "./mlpSongsClassifier.joblib"
 
 def extractIndices(probabilityVector, N):
     return np.argpartition(probabilityVector[0], -N)[-N:]
@@ -40,47 +43,28 @@ def recommendN(songs, playlist, n):
     print(songs.loc[indices])
     return songs.loc[indices]
 
-# A utility method to create a tf.data dataset from a Pandas Dataframe
-def df_to_dataset(dataframe, shuffle=True, batch_size=32):
-    dataframe = dataframe.copy()
-    labels = dataframe.index
-    ds = tf.data.Dataset.from_tensor_slices((dict(dataframe), labels))
-    if shuffle:
-        ds = ds.shuffle(buffer_size=len(dataframe))
-        ds = ds.batch(batch_size)
-    return ds
+def nnRecommendN(songs, playlist, n):
+    X = songs[numericColumns]
+    y = songs.index
 
-def tensorRecommendN(songs, playlist, N):
-    songs_ds = df_to_dataset(songs)
-    # for feature_batch, label_batch in X_ds.take(1):
-    #     print('Every feature:', list(feature_batch.keys()))
-    #     print('A batch of targets:', label_batch)
-    feature_columns = []
-    for header in numericColumns:
-        feature_columns.append(tf.feature_column.numeric_column(header))
-    model = tf.keras.Sequential([
-        # tf.keras.layers.Flatten(input_shape=X.values.shape),
-        tf.keras.layers.DenseFeatures(feature_columns),
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dense(len(songs))
-    ])
-    print("Starting Compilation of Tensorflow Model")
-    model.compile(optimizer='adam',
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(
-                      from_logits=True),
-                  metrics=['accuracy'])
-    print("Starting Training of Tensorflow Model")
-    model.fit(songs_ds, epochs=10)
-    playlistVec = playlist[numericColumns].median()
+    model = make_pipeline(
+        StandardScaler(),
+        MLPClassifier(),
+    )
+
+    try:
+        model = load(MLP_MODEL_CACHE_FILE)
+    except:
+        model.fit(X,y)
+        dump(model, MLP_MODEL_CACHE_FILE)
+
+    playlistVec = playlist[numericColumns].mean()
     playlistVec = pd.DataFrame(playlistVec).T
-    playlistVec_ds = df_to_dataset(playlistVec)
-
-    probability_model = tf.keras.Sequential([model,
-                                             tf.keras.layers.Softmax()])
-    predictions = probability_model.predict(playlistVec_ds)
-    top_n_indices = np.argpartition(predictions[0], -N)[-N:]
-    print(songs.iloc[top_n_indices, ])
+    probabilityVec = model.predict_proba(playlistVec)
+    indices = extractIndices(probabilityVec, n)
+    print(indices)
+    print(songs.loc[indices])
+    return songs.loc[indices]
 
 
 def test(songs, playlist, train_percent):
@@ -95,12 +79,13 @@ def test(songs, playlist, train_percent):
     intersection = pd.merge(recommendations, validation_set, how="inner")
     print(len(intersection)/len(validation_set))
 
+def main(playlist, corpus):
+    nnRecommendN(corpus, playlist, 5)
+    return
 
-songs = pd.read_csv("./spotifydata.csv", index_col=0)
-songs = songs.dropna()
-playlist = pd.read_csv("./playlist.csv", index_col=0)
-# songs = songs.set_index('id')
-# playlist = playlist.set_index('id')
-# test(playlist, 0.90)
-recommendN(songs, playlist, 5)
-# tensorRecommendN(songs, playlist, 5)
+if __name__ == "__main__":
+    corpus = pd.read_csv("./spotifydata.csv", index_col=0)
+    playlist = pd.read_csv(sys.argv[1], index_col=0)
+    if len(sys.argv) == 3:
+        corpus = pd.read_csv(sys.argv[2], index_col=0)
+    main(playlist, corpus)
