@@ -31,7 +31,7 @@ def main(playlist):
         temp_tfidf_scores = []
         for word in lyric.split():
             if (word.lower().isalpha() and (word.lower() not in word_set)):
-                if word.lower() != "tyrics":
+                if word.lower() != "lyrics":
                     word_occurence += number_of_occurences(word.lower(), lyric)
                     TF_Score = word_occurence / lyric_length
                     IDF_Score = math.log(total_number_of_lyrics / num_lyrics_containing_word(word, df['lyrics_filtered']))
