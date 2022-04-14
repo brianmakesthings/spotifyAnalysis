@@ -43,7 +43,7 @@ def main(playlist):
     lyrics_df = pd.DataFrame({'Words': word_list, 'TFIDF_Score_Per_Word': Total_TFIDF_Score})
     lyrics_df = lyrics_df.sort_values('TFIDF_Score_Per_Word', ascending=False)
     lyrics_df.drop_duplicates(subset="Words", keep=False, inplace=True)
-    lyrics_df.to_csv("Lyrics_TFIDF_Score")
+    lyrics_df.to_csv("Lyrics_TFIDF_Score", index=False)
 
 if __name__ == '__main__':
     main(sys.argv[1])
