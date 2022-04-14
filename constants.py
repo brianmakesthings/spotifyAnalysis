@@ -6,7 +6,10 @@ numericColumns = ["danceability",
                   "instrumentalness",
                   "liveness",
                   "valence",
-                  "tempo"]
+                  "tempo",
+                  "valence_lyrics",
+                  "arousal_lyrics",
+                  "dominance_lyrics"]
 
 metaDataColumns = ["song_name",
                     "artist"]
