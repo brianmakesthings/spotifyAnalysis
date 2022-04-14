@@ -11,4 +11,5 @@ $ pip install swaglyrics
 $ pip install nltk
 $ pip install wordcloud
 $ pip install requests
+$ pip install kaleido
 ```
