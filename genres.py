@@ -18,7 +18,7 @@ def get_onehot_encode(row, genres_length):
 
 def onehot_encode(playlist_df):
     
-    with open("genreList", "r") as fp:
+    with open("./img/genreList", "r") as fp:
         genreList = json.load(fp)
     
     genres_length = len(genreList)
