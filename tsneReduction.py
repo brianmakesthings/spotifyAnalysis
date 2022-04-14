@@ -16,19 +16,28 @@ numericColumns = ["danceability",
                 "tempo",
                 ]
 
-def main(playlists):
+metaDataColumns = ["song_name",
+                    "artist"]
+
+def main(output, playlists):
     playlistDfs = list(map(lambda x: pd.read_csv(x).dropna(), playlists))
-    comparisonDf = pd.concat(list(map(lambda x: x[numericColumns], playlistDfs)), keys=playlists) \
+    comparisonDf = pd.concat(list(map(lambda x: x[numericColumns + metaDataColumns], playlistDfs)), keys=playlists) \
         .reset_index(1, drop=True) \
         .reset_index(col_fill='Source')
     print(comparisonDf)
-    tsne = TSNE(perplexity=5, n_iter=5000)
+    tsne = TSNE(perplexity=30, n_iter=500)
+    # tsne = TSNE()
     reduced = tsne.fit_transform(comparisonDf[numericColumns])
     reducedDf = pd.DataFrame(reduced)
     reducedDf["source"] = comparisonDf["index"]
-    fig = px.scatter(x=reducedDf[0], y=reducedDf[1], color=reducedDf["source"])
-    fig.show()
+    reducedDf[metaDataColumns] = comparisonDf[metaDataColumns]
+    print(reducedDf)
+    fig = px.scatter(reducedDf, x=0, y=1, color="source", hover_data=metaDataColumns)
+    fig.update_xaxes(visible=False)
+    fig.update_yaxes(visible=False)
+    fig.write_html(output+".html")
+    fig.write_image(output+".png")
     return
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main(sys.argv[1], sys.argv[2:])

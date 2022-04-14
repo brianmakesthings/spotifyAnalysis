@@ -28,13 +28,13 @@ def extractIndices(probabilityVector, N):
 def recommendN(songs, playlist, n):
     model = make_pipeline(
         StandardScaler(),
-        KNeighborsClassifier()
+        KNeighborsClassifier(n_neighbors=n)
     )
     songs = songs.dropna()
     # print(playlist[["song_name", "artist"]])
     X = songs[numericColumns]
     y = songs.index
-    model = KNeighborsClassifier(n_neighbors=n)
+    # model = KNeighborsClassifier(n_neighbors=n)
     model.fit(X, y)
 
     playlistVec = playlist[numericColumns].mean()
