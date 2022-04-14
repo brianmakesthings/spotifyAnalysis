@@ -6,18 +6,9 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
 from joblib import dump, load
+from constants import numericColumns
 import os
 
-
-numericColumns = ["danceability",
-                  "energy",
-                  "loudness",
-                  "speechiness",
-                  "acousticness",
-                  "instrumentalness",
-                  "liveness",
-                  "valence",
-                  "tempo"]
 
 MLP_MODEL_CACHE_FILE = "./mlpSongsClassifier.joblib"
 

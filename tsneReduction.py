@@ -3,21 +3,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 from sklearn.manifold import TSNE
-
-# def tsneReduce(playlists):
-numericColumns = ["danceability",
-                "energy",
-                "loudness",
-                "speechiness",
-                "acousticness",
-                "instrumentalness",
-                "liveness",
-                "valence",
-                "tempo",
-                ]
-
-metaDataColumns = ["song_name",
-                    "artist"]
+from constants import numericColumns, metaDataColumns
 
 def main(output, playlists):
     playlistDfs = list(map(lambda x: pd.read_csv(x).dropna(), playlists))

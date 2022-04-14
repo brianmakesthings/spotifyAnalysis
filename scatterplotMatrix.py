@@ -1,19 +1,11 @@
 import numpy as np
 import pandas as pd
 import plotly.express as px
+from constants import numericColumns
 import sys
 
 def main(playlists, output=None):
     playlistDfs = list(map(lambda x: pd.read_csv(x), playlists))
-    numericColumns = ["danceability",
-                    "energy",
-                    "loudness",
-                    "speechiness",
-                    "acousticness",
-                    "instrumentalness",
-                    "liveness",
-                    "valence",
-                    "tempo"]
     # print(list(map(lambda x: x[numericColumns], playlistDfs)))
     # print([playlistDfs[0], playlistDfs[1]])
     comparisonDf = pd.concat(list(map(lambda x: x[numericColumns], playlistDfs)), keys=playlists) \

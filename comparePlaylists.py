@@ -1,18 +1,7 @@
 import sys
 import pandas as pd
 from scipy.stats import ttest_ind, mannwhitneyu
-
-numericColumns = ["danceability",
-                  "energy",
-                  "loudness",
-                  "speechiness",
-                  "acousticness",
-                  "instrumentalness",
-                  "liveness",
-                  "valence",
-                  "tempo"]
-
-sig_level = 0.05
+from constants import numericColumns, sig_level
 
 def compareMeans(df1, df2, columns = numericColumns):
     results = []
