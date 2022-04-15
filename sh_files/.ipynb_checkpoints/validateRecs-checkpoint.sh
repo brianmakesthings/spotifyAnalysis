@@ -5,7 +5,7 @@ do
     list=$(find recs -type f -name "*$FILE_ROOT*")
     for rec in $list
     do
-        python ../comparePlaylists.py $FILE $rec
+        python ../py_scripts/comparePlaylists.py $FILE $rec
     done
 
 done
