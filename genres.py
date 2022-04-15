@@ -5,6 +5,21 @@ import requests, sys
 import json
 import ast
 
+def get_spotify_genres():
+    r = requests.get("http://everynoise.com/engenremap.html")
+    soup = BeautifulSoup(r.text,"html.parser")
+    allGenreDivs = soup.find_all("div", "genre scanme")
+
+    genreList = []
+
+    for genreDiv in allGenreDivs: 
+        genre = str.strip(genreDiv.getText())
+        genre = genre.strip('»')
+        genreList.append(genre)
+
+    with open("./img/genreList", "w") as fp:
+        json.dump(genreList, fp)
+
 def get_onehot_encode(row, genres_length):
     np.set_printoptions(threshold=sys.maxsize)
     genre = row['genres_encoded']
@@ -41,7 +56,7 @@ def encode_genre(row, genreList):
 
 def main(playlist_csv):
     
-    with open("genreList", "r") as fp:
+    with open("./img/genreList", "r") as fp:
         genreList = json.load(fp)
         
     playlist_df = pd.read_csv(playlist_csv)
