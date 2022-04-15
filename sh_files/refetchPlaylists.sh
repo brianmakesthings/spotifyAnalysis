@@ -10,7 +10,7 @@ python ../py_scripts/playlist.py Spotify 37i9dQZF1DX0XUsuxWHRQd ../playlists/spo
 python ../py_scripts/playlist.py null 1h0CEZCm6IbFTbxThn6Xcs ../playlists/premadeClassical.csv
 python ../py_scripts/playlist.py spotify 37i9dQZF1EQn2GRFTFMl2A ../playlists/90sMix.csv
 python ../py_scripts/playlist.py s4fu8wb8wm4zqumjnssds9ph2 5eE9taMGALspZXJ59p0ERr ../playlists/MilaJPOP.csv
-python ../py_scripts/playlist.py spotify 37i9dQZF1EQn2GRFTFMl2A ../playlists/spotifyChristian.csv
+python ../py_scripts/playlist.py spotify 0NABnUOcrFIWP27uXedhi6 ../playlists/spotifyChristian.csv
 
 for FILE in ../playlists/*.csv
 do
