@@ -5,6 +5,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from joblib import dump, load
 from constants import numericColumns
 import os
@@ -16,12 +18,15 @@ def extractIndices(probabilityVector, N):
     return np.argpartition(probabilityVector[0], -N)[-N:]
 
 
-def recommendN(songs, playlist, n):
+def recommendN(songs, playlist, n, classifier = None):
+    if classifier is None:
+        classifier = KNeighborsClassifier(n_neighbors=n)
     model = make_pipeline(
         StandardScaler(),
-        KNeighborsClassifier(n_neighbors=n)
+        classifier
     )
-    songs = songs.dropna()
+    songs = songs[numericColumns].dropna()
+    # print(songs)
     # print(playlist[["song_name", "artist"]])
     X = songs[numericColumns]
     y = songs.index
@@ -79,9 +84,12 @@ def exportRec(df, filename, suffix):
 def main(playlist, corpus, filename):
     numRecs = 5
     knnRecommendations = recommendN(corpus, playlist, numRecs)
-    nnRecommendations = nnRecommendN(corpus, playlist, numRecs)
+    # svcRecommendations = recommendN(corpus, playlist, SVC(gamma=2))
+    rfRecommendations = recommendN(corpus, playlist, numRecs, RandomForestClassifier())
+    # nnRecommendations = nnRecommendN(corpus, playlist, numRecs)
     exportRec(knnRecommendations, filename, "-knn.csv")
-    exportRec(nnRecommendations, filename, "-nn.csv")
+    # exportRec(nnRecommendations, filename, "-nn.csv")
+    exportRec(rfRecommendations, filename, "-rf.csv")
     return
 
 if __name__ == "__main__":

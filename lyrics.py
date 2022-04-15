@@ -7,6 +7,7 @@ import ast
 from nltk.corpus import stopwords
 from swaglyrics.cli import get_lyrics
 from sklearn.feature_extraction.text import TfidfVectorizer
+import time
 pd.options.mode.chained_assignment = None
 
 
@@ -40,7 +41,11 @@ def get_playlist_lyrics(row):
     artist = row['artist']
     print("Retriving lyrics for " + song_name + " by " + artist)
     
-    lyrics = get_lyrics(song_name, artist)
+    try:
+        lyrics = get_lyrics(song_name, artist)
+    except:
+        time.sleep(5)
+        lyrics = get_lyrics(song_name, artist)
     return [lyrics]
         
 

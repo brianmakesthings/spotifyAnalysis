@@ -12,6 +12,7 @@ def get_mood():
     return df, words
 
 def get_valence_arousal_dominance(row):
+    print("Getting scores for", row["song_name"], row["artist"])
     
     mood_df, words = get_mood()
     lyric = row['lyrics_filtered']
@@ -22,7 +23,7 @@ def get_valence_arousal_dominance(row):
         row['dominance_lyrics'] = None
         return row
     
-    lyric = lyric.split(' ')
+    lyric = str(lyric).split(' ')
     
     # remove duplicate words
     lyric = list(dict.fromkeys(lyric))
