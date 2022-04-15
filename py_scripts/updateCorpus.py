@@ -70,7 +70,7 @@ def update_corpus(sp, path):
     return corpus_res_df
     
 
-def main(path="./spotifydata.csv"):
+def main(path="../spotifydata.csv"):
     
     client_id = '2ceb199cdce145b68b4b4fccca553198'
     client_secret = '962227d68ad54204b52d739fca6a1bfb'
