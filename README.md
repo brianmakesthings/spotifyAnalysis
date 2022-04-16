@@ -26,5 +26,6 @@ playlist.py [username] [Spotify playlist ID] [output filename]
 ```
 lyrics.py [input filename]
 genres.py [input filename]
+mood.py [input filename]
 ```
 - the input file should be a .csv file generated from playlist.py
