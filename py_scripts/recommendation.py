@@ -6,65 +6,48 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 from joblib import dump, load
-from constants import numericColumns
+from constants import numericColumns, lyricsAnalysisColumns
 import os
 
 
-MLP_MODEL_CACHE_FILE = "./mlpSongsClassifier.joblib"
+MLP_MODEL_CACHE_FILE = "./model_cache/mlpSongsClassifier.joblib"
+DT_MODEL_CACHE_FILE = "./model_cache/dtSongsClassifier.joblib"
 
 def extractIndices(probabilityVector, N):
     return np.argpartition(probabilityVector[0], -N)[-N:]
 
 
-def recommendN(songs, playlist, n, classifier = None):
+def recommendN(songs, playlist, n, classifier = None, cache=None):
     if classifier is None:
         classifier = KNeighborsClassifier(n_neighbors=n)
     model = make_pipeline(
         StandardScaler(),
         classifier
     )
-    songs = songs[numericColumns].dropna()
-    # print(songs)
-    # print(playlist[["song_name", "artist"]])
-    X = songs[numericColumns]
-    y = songs.index
-    # model = KNeighborsClassifier(n_neighbors=n)
-    model.fit(X, y)
+    songs[lyricsAnalysisColumns] = songs[lyricsAnalysisColumns].fillna(0)
+    playlist[lyricsAnalysisColumns] = playlist[lyricsAnalysisColumns].fillna(0)
 
-    playlistVec = playlist[numericColumns].mean()
-    playlistVec = pd.DataFrame(playlistVec).T
-    probabilityVec = model.predict_proba(playlistVec)
-    indices = extractIndices(probabilityVec, n)
-    # print(indices)
-    # print(songs.loc[indices])
-    return songs.loc[indices]
+    songs_filtered = songs[numericColumns].dropna()
+    X = songs_filtered[numericColumns]
+    y = songs_filtered.index
 
-def nnRecommendN(songs, playlist, n):
-    songs = songs.dropna()
-    X = songs[numericColumns]
-    y = songs.index
-
-    model = make_pipeline(
-        StandardScaler(),
-        MLPClassifier(),
-    )
-
-    try:
-        model = load(MLP_MODEL_CACHE_FILE)
-    except:
+    if cache is not None:
+        try:
+            model = load(cache)
+        except:
+            model.fit(X, y)
+            dump(model, cache)
+    else:
         model.fit(X,y)
-        dump(model, MLP_MODEL_CACHE_FILE)
+
 
     playlistVec = playlist[numericColumns].mean()
     playlistVec = pd.DataFrame(playlistVec).T
     probabilityVec = model.predict_proba(playlistVec)
     indices = extractIndices(probabilityVec, n)
-    # print(indices)
-    # print(songs.loc[indices])
     return songs.loc[indices]
-
 
 def test(songs, playlist, train_percent):
     database = pd.concat([songs, playlist])
@@ -83,13 +66,16 @@ def exportRec(df, filename, suffix):
 
 def main(playlist, corpus, filename):
     numRecs = 5
+    print("Recommending KNN")
     knnRecommendations = recommendN(corpus, playlist, numRecs)
     # svcRecommendations = recommendN(corpus, playlist, SVC(gamma=2))
-    rfRecommendations = recommendN(corpus, playlist, numRecs, RandomForestClassifier())
-    # nnRecommendations = nnRecommendN(corpus, playlist, numRecs)
+    print("Recommending MLP")
+    nnRecommendations = recommendN(corpus, playlist, numRecs, MLPClassifier(), cache=MLP_MODEL_CACHE_FILE)
+    print("Recommending DT")
+    rfRecommendations = recommendN(corpus, playlist, numRecs, DecisionTreeClassifier(), cache=DT_MODEL_CACHE_FILE)
     exportRec(knnRecommendations, filename, "-knn.csv")
-    # exportRec(nnRecommendations, filename, "-nn.csv")
-    exportRec(rfRecommendations, filename, "-rf.csv")
+    exportRec(nnRecommendations, filename, "-nn.csv")
+    exportRec(rfRecommendations, filename, "-dt.csv")
     return
 
 if __name__ == "__main__":
