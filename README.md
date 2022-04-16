@@ -14,6 +14,9 @@ $ pip install requests
 $ pip install kaleido
 ```
 
+# Adding the Corpus
+Although we have a subset of the corpus of songs to provide recommendations, the system will perform drastically better by replacing ./spotifydata.csv with the one at this url https://drive.google.com/file/d/1r0hiCGYKJSLZN302xvHCq5PD9VIxx-OV/view?usp=sharing
+
 ## Fetch Spotify Playlist Data
 
 #### Run the following files:
