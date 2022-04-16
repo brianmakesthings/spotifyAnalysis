@@ -44,6 +44,6 @@ python3 stat_tests.py playlist.csv
 
 ## Command to create wordcloud based on number of occurences of words in a playlist's lyrics:
 ```
-python3 wordcloud.py playlist.csv
+python3 word_cloud.py playlist.csv
 ```
 
