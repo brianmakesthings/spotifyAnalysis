@@ -3,6 +3,5 @@ __pycache__
 mlpSongsClassifier.joblib
 img/tsne
 mlpSongsClassifierCopy.joblib
-spotifydata.csv
 img/scatterplotMatrix
 model_cache/dtSongsClassifier.joblib
