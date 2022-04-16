@@ -1,4 +1,4 @@
-for FILE in ../playlists/*.csv
+for FILE in ./playlists/*.csv
 do
-    python ../recommendation.py $FILE
+    python ./py_scripts/recommendation.py $FILE
 done

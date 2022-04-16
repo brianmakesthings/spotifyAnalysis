@@ -7,7 +7,17 @@ numericColumns = ["danceability",
                   "liveness",
                   "valence",
                   "tempo",
-                  "popularity"]
+                  "popularity",
+                  "duration_ms",
+                  "valence_lyrics",
+                  "arousal_lyrics",
+                  "dominance_lyrics"
+                ]
+
+lyricsAnalysisColumns = ["valence_lyrics",
+                        "arousal_lyrics",
+                        "dominance_lyrics"
+                        ]
 
 metaDataColumns = ["song_name",
                     "artist"]
