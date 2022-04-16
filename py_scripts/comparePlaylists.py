@@ -21,10 +21,13 @@ def main(playlist1, playlist2):
     # print(meanComparison)
     problemColumns = meanComparison[meanComparison["p_val"] < sig_level]
     if len(problemColumns) > 0:
-        print(problemColumns)
+        # print(problemColumns)
+        print(len(problemColumns))
         print("different", playlist1, playlist2)
+        print("\n\n")
         return
     print("ok", playlist1, playlist2)
+    print("\n\n")
     return
 
 if __name__ == "__main__":
