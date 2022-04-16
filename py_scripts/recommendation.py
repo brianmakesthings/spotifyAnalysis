@@ -46,6 +46,7 @@ def recommendN(songs, playlist, n, classifier = None, cache=None):
     playlistVec = playlist[numericColumns].mean()
     playlistVec = pd.DataFrame(playlistVec).T
     probabilityVec = model.predict_proba(playlistVec)
+    # print(probabilityVec[probabilityVec>0])
     indices = extractIndices(probabilityVec, n)
     return songs.loc[indices]
 
@@ -72,7 +73,7 @@ def main(playlist, corpus, filename):
     print("Recommending MLP")
     nnRecommendations = recommendN(corpus, playlist, numRecs, MLPClassifier(), cache=MLP_MODEL_CACHE_FILE)
     print("Recommending DT")
-    rfRecommendations = recommendN(corpus, playlist, numRecs, DecisionTreeClassifier(), cache=DT_MODEL_CACHE_FILE)
+    rfRecommendations = recommendN(corpus, playlist, numRecs, DecisionTreeClassifier(min_samples_leaf=numRecs), cache=DT_MODEL_CACHE_FILE)
     exportRec(knnRecommendations, filename, "-knn.csv")
     exportRec(nnRecommendations, filename, "-nn.csv")
     exportRec(rfRecommendations, filename, "-dt.csv")
