@@ -3,7 +3,7 @@ import sys
 
 def get_mood():
     
-    df = pd.read_csv('Ratings_Warriner_et_al.csv', index_col=0)
+    df = pd.read_csv('./py_scripts/Ratings_Warriner_et_al.csv', index_col=0)
     df = df[['Word','V.Mean.Sum', 'A.Mean.Sum','D.Mean.Sum']]
   
     df.columns=['word', 'valence', 'arousal', 'dominance']
