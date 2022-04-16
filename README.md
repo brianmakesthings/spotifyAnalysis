@@ -31,11 +31,17 @@ mood.py [input filename]
 - the input file should be a .csv file generated from playlist.py
 
 ## Command to Compute Lyrics_TFIDF scores for words in a playlist:
-```python3 lyrics_tfidf.py playlist.csv```
+```
+python3 lyrics_tfidf.py playlist.csv
+```
 
 ## Command to Run statistical tests via the lyrics tfidf scores:
-```python3 stat_tests.py playlist.csv```
+```
+python3 stat_tests.py playlist.csv
+```
 
 ## Command to create wordcloud based on number of occurences of words in a playlist's lyrics:
-```python3 wordcloud.py playlist.csv```
+```
+python3 wordcloud.py playlist.csv
+```
 
