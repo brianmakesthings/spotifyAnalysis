@@ -78,5 +78,6 @@ sh_file/generateTSNE.sh
 ```
 mkdir img/scatterplotMatrix
 python py_scripts/scatterplotMatrix.py playlist1.csv playlist2.csv "title string"
-- outputs html and png of the pairplots to img/scatterplotMatrix
 ```
+
+- outputs html and png of the pairplots to img/scatterplotMatrix
