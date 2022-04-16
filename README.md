@@ -23,12 +23,14 @@ playlist.py [username] [Spotify playlist ID] [output filename]
 ```
 - username is the user's Spotify user ID
 - Spotify playlist ID is the [Spotify ID](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids)
+- Produces [output filename].csv
 ```
 lyrics.py [input filename]
 genres.py [input filename]
 mood.py [input filename]
 ```
 - the input file should be a .csv file generated from playlist.py
+- Saves to existing [output filename].csv
 
 ## Command to Compute Lyrics_TFIDF scores for words in a playlist:
 ```
